@@ -45,7 +45,11 @@ defmodule ExAdmin.Utils do
 
   @doc false
   def resource_name(item) do
-    item |> base_name |> Inflex.underscore |> String.to_atom
+    if :erlang.function_exported(item, :model_name, 0) do
+      item.model_name() |> String.to_atom
+    else
+      item |> base_name |> Inflex.underscore |> String.to_atom
+    end
   end
 
   @doc """
